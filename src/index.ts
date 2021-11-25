@@ -1,29 +1,52 @@
-import {Command, flags} from '@oclif/command'
+import { Command, flags } from '@oclif/command'
+import { string } from '@oclif/parser/lib/flags'
+import { Helper } from './helper'
 
 class MsTeamsAdaptiveNotifications extends Command {
-  static description = 'describe the command here'
-
+  static description = 'Send Microsoft Adaptive Cards using an Incoming Webhook.'
+  static usage = "-t <adaptive-card-template> -c <adaptive-card-content> WEBHOOKURL"
   static flags = {
     // add --version flag to show CLI version
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: flags.boolean({char: 'f'}),
+    version: flags.version({ char: 'v' }),
+    help: flags.help({ char: 'h' }),
+    template: flags.string({
+      char: 't',
+      description: 'Adaptive Card Template - [URL/FILE_PATH]',
+      env: 'ADAPTIVE_CARD_TEMPLATE',
+      multiple: false,
+      required: true
+    }),
+    content: flags.string({
+      char: 'c',
+      description: "Content to be inserted into Adaptive Card Template - [URL/FILE_PATH]",
+      env: 'ADAPTIVE_CARD_CONTENT',
+      required: true,
+      multiple: false
+    })
   }
 
-  static args = [{name: 'file'}]
+  static args = [{
+    name: 'webhookURL',
+    required: true,
+    description: 'Microsoft Teams Webhook URL',
+    hidden: false,
+  }]
 
   async run() {
-    const {args, flags} = this.parse(MsTeamsAdaptiveNotifications)
+    const { args, flags } = this.parse(MsTeamsAdaptiveNotifications)
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from ./src/index.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
-    }
+
+    // Fetch Content from local/remote source
+    let [template, values] = await Promise.all(
+      [Helper.fetchContent(flags.template),
+      Helper.fetchContent(flags.template)]);
+
+    // Validate Content for Valid JSON
+    Helper.validateJson(template)
+    Helper.validateJson(values)
+    this.log("Complete")
   }
+
 }
 
 export = MsTeamsAdaptiveNotifications
