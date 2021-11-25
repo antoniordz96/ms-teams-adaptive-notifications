@@ -1,5 +1,7 @@
 {
     "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.4",
     "body": [
       {
         "type": "TextBlock",
@@ -93,8 +95,6 @@
         "title": "View",
         "url": "${viewUrl}"
       }
-    ],
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.0"
+    ]
   }
   

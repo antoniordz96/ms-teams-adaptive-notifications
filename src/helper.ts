@@ -4,6 +4,9 @@ import axios from 'axios'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import {error as oclifError} from '@oclif/errors'
+import * as ACData from 'adaptivecards-templating'
+import * as AdaptiveCards from 'adaptivecards'
+
 export const Helper = {
 
   async fetchContent(adaptiveCardLocation: string) {
@@ -13,6 +16,34 @@ export const Helper = {
 
     // this.fetchDataFromDisk(adaptiveCardLocation)
     return this.fetchDataFromDisk(adaptiveCardLocation)
+  },
+
+  async sendToMsWebhook(template: JSON, content: JSON, webhookUrl: string) {
+    const temp = new ACData.Template(template)
+
+    const expandedTemplate = temp.expand({
+      $root: content,
+    })
+
+    const adaptiveCard = new AdaptiveCards.AdaptiveCard()
+
+    adaptiveCard.parse(expandedTemplate)
+    console.log(adaptiveCard.toJSON())
+    const message = {
+      type: 'message',
+      attachments: [{
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        contentUrl: null,
+        content: adaptiveCard.toJSON(),
+      }],
+    }
+    axios.post(webhookUrl, message)
+    .then(response => {
+      console.log(response.status)
+    })
+    .catch(error => {
+      console.log(error.message)
+    })
   },
 
   isValidHttpUrl(input: string): boolean {

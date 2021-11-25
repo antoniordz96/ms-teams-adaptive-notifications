@@ -34,16 +34,22 @@ class MsTeamsAdaptiveNotifications extends Command {
   async run() {
     const {args, flags} = this.parse(MsTeamsAdaptiveNotifications)
 
-    this.log(args.webhookURL)
+    if (Helper.isValidHttpUrl(args.webhookURL) === false) {
+      this.error('Webhook Endpoint provided is an invalid URL', {
+        code: 'INVALID_URL',
+        suggestions: ['https://www.w3.org/TR/2011/WD-html5-20110525/urls.html#url'],
+      })
+    }
+
     // Fetch Content from local/remote source
-    const [template, values] = await Promise.all(
+    const [templatePayload, values] = await Promise.all(
       [Helper.fetchContent(flags.template),
         Helper.fetchContent(flags.content)])
 
-    // Validate Content for Valid JSON
-    Helper.validateJson(template)
-    Helper.validateJson(values)
-    this.log('Complete')
+    // JSON Validation and forward request
+    await Helper.sendToMsWebhook(Helper.validateJson(templatePayload),
+      Helper.validateJson(values),
+      args.webhookURL)
   }
 }
 
