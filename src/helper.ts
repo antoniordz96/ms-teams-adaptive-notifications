@@ -28,7 +28,6 @@ export const Helper = {
     const adaptiveCard = new AdaptiveCards.AdaptiveCard()
 
     adaptiveCard.parse(expandedTemplate)
-    console.log(adaptiveCard.toJSON())
     const message = {
       type: 'message',
       attachments: [{
@@ -37,24 +36,17 @@ export const Helper = {
         content: adaptiveCard.toJSON(),
       }],
     }
-    axios.post(webhookUrl, message)
-    .then(response => {
-      console.log(response.status)
-    })
-    .catch(error => {
-      console.log(error.message)
-    })
-  },
-
-  isValidHttpUrl(input: string): boolean {
-    let url
     try {
-      url = new URL(input)
-    } catch {
-      return false
+      const response = await axios({
+        method: 'post',
+        url: webhookUrl,
+        data: message,
+      })
+      return response.status
+    } catch (error)  {
+      debug(error)
+      oclifError('Unable to send adaptiveCard Template to Webhook')
     }
-
-    return url.protocol === 'https:' || url.protocol === 'https:'
   },
 
   async fetchDataFromURL(location: string) {
@@ -102,6 +94,11 @@ export const Helper = {
 
   fetchDataFromDisk(location: string) {
     try {
+      const extension = path.extname(location)
+      if (extension !== '.json') {
+        throw new Error(`File ${location} extension does not end with .json`)
+      }
+
       const data = fs.readFileSync(path.resolve(location), {encoding: 'utf-8'})
       return data
     } catch (error) {
@@ -112,6 +109,17 @@ export const Helper = {
 
       oclifError(errorMessage)
     }
+  },
+
+  isValidHttpUrl(input: string): boolean {
+    let url
+    try {
+      url = new URL(input)
+    } catch {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
   },
 
   validateJson(content: string | object) {
