@@ -49,8 +49,7 @@
     "lint:dev": "eslint . --ext .ts --config .eslintrc",
     "test": "mocha \"test/**/*.test.ts\"",
     "test:coverage": "nyc npm run test",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-    "version": "oclif-dev readme && git add README.md"
+    "build": "rm -rf lib && tsc -b"
   },
   "types": "lib/index.d.ts",
   "dependencies": {
