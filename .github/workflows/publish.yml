@@ -4,8 +4,10 @@
 name: Node.js Package & Docker Push Release
 
 on:
+  # Type ‘published’ will be triggered if the release is published, no matter it’s draft or not. 
+  # Type ‘created’ will be triggered when a NON-draft release is created and published.
   release:
-    types: [created]
+    types: [created,published]
 
 env:
   TEST_TAG: antoniordz/ms-notify:test
