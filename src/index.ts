@@ -49,7 +49,8 @@ class MsTeamsAdaptiveNotifications extends Command {
     // JSON Validation and forward request
     await Helper.sendToMsWebhook(Helper.validateJson(templatePayload),
       Helper.validateJson(values),
-      args.webhookURL)
+      args.webhookURL).then(result =>
+      this.log(`Notification Sent! Webhook Responded with a ${result}`))
   }
 }
 
