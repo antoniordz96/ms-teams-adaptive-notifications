@@ -1,7 +1,7 @@
 {
   "name": "ms-teams-adaptive-notifications",
   "description": "CLI used to send Microsoft Adaptive Cards using an Incoming Webhook.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Antonio Rodriguez @antoniordz96",
   "bin": {
     "ms-notify": "./bin/run"
