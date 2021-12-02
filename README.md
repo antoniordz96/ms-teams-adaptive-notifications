@@ -2,11 +2,14 @@
 
 **CLI used to send Microsoft Adaptive Cards using an Incoming Webhook.**
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+
 [![Version](https://img.shields.io/npm/v/ms-teams-adaptive-notifications.svg)](https://npmjs.org/package/ms-teams-adaptive-notifications)
+[<img src="https://img.shields.io/badge/Docker-latest-blue.svg?logo=Docker">](https://hub.docker.com/repository/docker/antoniordz/ms-notify)
 [![codecov](https://codecov.io/gh/antoniordz96/ms-teams-adaptive-notifications/branch/main/graph/badge.svg?token=8Q5QA84ORD)](https://codecov.io/gh/antoniordz96/ms-teams-adaptive-notifications)
 [![Downloads/week](https://img.shields.io/npm/dw/ms-teams-adaptive-notifications.svg)](https://npmjs.org/package/ms-teams-adaptive-notifications)
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 ## Overview
 
